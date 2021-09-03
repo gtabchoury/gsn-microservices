@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  game-ms:
+    build: ./
+    image: "game-ms"
+    depends_on:
+      - "game-ms-db"
+    environment:
+      - TZ=America/Sao_Paulo
+      - DB_NAME=game-ms
+      - DB_HOST=game-ms-db:5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - MAX_POOLSIZE=30
+
+  game-ms-db:
+    container_name: game-ms-db
+    build:
+      context:  ./
+      dockerfile: "Dockerfile.db"
+    shm_size: 2g
+    ports:
+      - "5455:5432"
+
+networks:
+  default:
+    external:
+      name: gsn_network

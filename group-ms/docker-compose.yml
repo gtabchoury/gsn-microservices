@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  group-ms:
+    build: ./
+    image: "group-ms"
+    depends_on:
+      - "group-ms-db"
+    environment:
+      - TZ=America/Sao_Paulo
+      - DB_NAME=group-ms
+      - DB_HOST=group-ms-db:5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - MAX_POOLSIZE=30
+
+  group-ms-db:
+    container_name: group-ms-db
+    build:
+      context:  ./
+      dockerfile: "Dockerfile.db"
+    shm_size: 2g
+    ports:
+      - "5454:5432"
+
+networks:
+  default:
+    external:
+      name: gsn_network

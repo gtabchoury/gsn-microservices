@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  user-ms:
+    build: ./
+    image: "user-ms"
+    depends_on:
+      - "user-ms-db"
+    environment:
+      - TZ=America/Sao_Paulo
+      - DB_NAME=user-ms
+      - DB_HOST=user-ms-db:5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - MAX_POOLSIZE=30
+
+  user-ms-db:
+    container_name: user-ms-db
+    build:
+      context:  ./
+      dockerfile: "Dockerfile.db"
+    shm_size: 2g
+    ports:
+      - "5456:5432"
+
+networks:
+  default:
+    external:
+      name: gsn_network

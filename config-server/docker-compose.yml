@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  config-server:
+    build: ./
+    image: "config-server"
+    ports:
+      - "8888:8888"
+    environment:
+      - TZ=America/Sao_Paulo
+
+networks:
+  default:
+    external:
+      name: gsn_network
